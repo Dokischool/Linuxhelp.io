@@ -224,45 +224,18 @@
             <a href="#lamp" class="nav-btn">1. LAMP Telepítés</a>
             <a href="#mysql" class="nav-btn">2. MySQL Jogosultságok</a>
             <a href="#mkdir" class="nav-btn">3. Mappastruktúrák</a>
-            <a href="#tar" class="nav-btn">4. Archiválás (TAR)</a>
-            <a href="#chmod" class="nav-btn">5. Jogosultságkezelés</a>
-            <a href="#mkfs" class="nav-btn">6. Fájlrendszer (mkfs)</a>
-            <a href="#usermod" class="nav-btn">7. Csoportkezelés (usermod)</a>
+            <a href="#tar" class="nav-btn">4. Archiválás & Tömörítés</a>
+            <a href="#cp" class="nav-btn">5. Fájlok másolása</a>
+            <a href="#chmod" class="nav-btn">6. Jogosultságkezelés</a>
+            <a href="#mkfs" class="nav-btn">7. Fájlrendszer (mkfs)</a>
+            <a href="#pipe" class="nav-btn">8. Csővezeték (Pipe) & Grep</a>
         </div>
 
         <div id="lamp" class="module-card">
             <h2 class="module-title">🔹 1. Modul: LAMP Szerverkörnyezet Kiépítése</h2>
-            <p>A vizsgafeladatok alapja egy működő webszerver és adatbázis-háttér biztosítása. Fontos, hogy a telepítések után mindig ellenőrizd a szolgáltatások állapotát!</p>
             
             <div class="terminal-block">sudo apt install mariadb-server apache2 -y</div>
-
-            <table class="explanation-table">
-                <thead>
-                    <tr>
-                        <th>Parancselem / Flag</th>
-                        <th>Típus</th>
-                        <th>Részletes funkció és vizsgajelentőség</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>sudo</code></td>
-                        <td><span class="badge badge-cmd">Parancs</span></td>
-                        <td>SuperUser DO. Adminisztrátori (root) joggal futtatja a parancsot.</td>
-                    </tr>
-                    <tr>
-                        <td><code>apt install</code></td>
-                        <td><span class="badge badge-cmd">Parancs</span></td>
-                        <td>A Debian/Ubuntu rendszerek csomagkezelő parancsa új szoftverek letöltéséhez.</td>
-                    </tr>
-                    <tr>
-                        <td><code>-y</code></td>
-                        <td><span class="badge badge-flag">Flag</span></td>
-                        <td><b>Yes.</b> Automatikusan elfogadja a telepítés során feldobott megerősítést.</td>
-                    </tr>
-                </tbody>
-            </table>
-
+            
             <h3>Szolgáltatások státuszának verifikálása</h3>
             <div class="terminal-block">sudo systemctl status mariadb
 sudo systemctl status apache2</div>
@@ -279,21 +252,14 @@ sudo systemctl restart apache2</div>
         </div>
 
         <div id="mysql" class="module-card">
-            <h2 class="module-title">🔹 2. Modul: MySQL Adminisztráció és Biztonságos Felhasználókezelés</h2>
+            <h2 class="module-title">🔹 2. Modul: MySQL Adminisztráció</h2>
             
             <div class="terminal-block">mysql -u root -p</div>
 
-            <p>A fenti paranccsal lépünk be a MySQL parancssorba. Ezután az alábbi SQL utasításokat adjuk ki (pontosan követve a vizsga anyagát):</p>
-
-            <div class="terminal-block sql-block">CREATE USER 'vizsgazo'@'localhost' IDENTIFIED BY 'Abcd1234';
-GRANT ALL PRIVILEGES ON . TO 'vizsgazo'@'localhost' WITH GRANT OPTION;
+            <div class="terminal-block sql-block">CREATE USER 'vizsgazo'@'%' IDENTIFIED BY 'Abcd1234';
+GRANT ALL PRIVILEGES ON . TO 'vizsgazo'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;</div>
-
-            <div class="warning-box">
-                <h4>⚠️ Megjegyzés a szintaxishoz</h4>
-                <p>A vizsgafeladat forrásanyagában a <code>GRANT ALL PRIVILEGES ON . TO</code> parancs szerepel. Ezt a weblap pontosan így tartalmazza. Mindig kövesd az adott vizsgafeladat pontos leírását!</p>
-            </div>
 
             <h3>Szolgáltatás újraindítása és IP Cím Lekérdezése</h3>
             <div class="terminal-block">sudo systemctl restart mariadb
@@ -302,15 +268,12 @@ ip a</div>
 
         <div id="mkdir" class="module-card">
             <h2 class="module-title">🔹 3. Modul: Könyvtárszerkezet Generálás</h2>
-            <p>Mappastruktúrák létrehozására a vizsgán két módszert is alkalmazhatsz. A `mkdir -p` (parents) kapcsoló garantálja, hogy a szülőkönyvtárak is létrejönnek.</p>
             
             <h3>A) Gyorsított módszer (Kapcsos zárójelekkel)</h3>
             <div class="terminal-block">sudo mkdir -p Mentök/{Lègi,Vizi} Tüzoltòl/Zàhony/{Kobra365,Vizisiklò824}
 tree</div>
-            <p><b>FONTOS:</b> A vesszők után <u>nem szabad szóközt tenni</u> a kapcsos zárójelek között!</p>
 
             <h3>B) Lépésenkénti, biztonságos módszer</h3>
-            <p>Ha nem szeretnéd egy parancsba sűríteni, soronként is kiadhatod (ahogy az egyik vizsgakép is mutatja). Itt figyelj a pontos elnevezésekre (pl. Kobra356 vs 365):</p>
             <div class="terminal-block">mkdir -p Mentők/Légi
 mkdir -p Mentők/Vizi
 mkdir -p Tűzoltók/Záhony/Kobra356
@@ -319,109 +282,135 @@ tree</div>
         </div>
 
         <div id="tar" class="module-card">
-            <h2 class="module-title">🔹 4. Modul: Archívumok Készítése</h2>
+            <h2 class="module-title">🔹 4. Modul: Archívumok Készítése és Tömörítése</h2>
+            <p>Első lépésként létrehozunk egy sima <code>.tar</code> archívumot, majd a vizsgafeladat szerint ezt be kell tömörítenünk egy <code>bzip2</code> eljárással, hogy helyet spóroljunk.</p>
             
+            <h3>1. Archívum létrehozása (Becsomagolás)</h3>
             <div class="terminal-block">sudo tar -cvf /home/vizsgazo/fire.tar Tüzoltòl/</div>
+            <p>A <code>-cvf</code> kapcsolókkal (Create, Verbose, File) létrehozunk egy tömörítetlen archívumot.</p>
 
+            <h3>2. Archívum tömörítése (bzip2)</h3>
+            <div class="terminal-block">sudo bzip2 /home/vizsgazo/fire.tar
+ls</div>
+            
             <table class="explanation-table">
                 <thead>
                     <tr>
-                        <th>Flag</th>
-                        <th>Jelentés</th>
-                        <th>Feladat</th>
+                        <th>Parancs / Eredmény</th>
+                        <th>Magyarázat</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>-c</code>, <code>-v</code>, <code>-f</code></td>
-                        <td><b>Create, Verbose, File</b></td>
-                        <td>Új archívum létrehozása, részletes listázás, és a célfájl megnevezése.</td>
+                        <td><code>bzip2 [fájl]</code></td>
+                        <td>A parancs bemenetként kapja a `.tar` fájlt, és egy nagyon erős tömörítési algoritmussal összezsugorítja azt.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ls</code> kimenete: <br><span style="color: #f43f5e">fire.tar.bz2</span></td>
+                        <td>Az eredeti `fire.tar` fájl megszűnik létezni, helyette a rendszer létrehozza a `fire.tar.bz2` nevű, már tömörített állományt.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cp" class="module-card">
+            <h2 class="module-title">🔹 5. Modul: Fájlok másolása helyettesítő karakterekkel (Wildcards)</h2>
+            <p>Gyakori vizsgafeladat, hogy egy adott mappából csak a bizonyos betűvel kezdődő fájlokat kell átmásolni egy új helyre.</p>
+
+            <div class="terminal-block">sudo cp /etc/m* Tűzoltól/</div>
+
+            <table class="explanation-table">
+                <thead>
+                    <tr>
+                        <th>Kifejezés</th>
+                        <th>Jelentés</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>cp</code></td>
+                        <td><b>Copy.</b> A másolás parancsa.</td>
+                    </tr>
+                    <tr>
+                        <td><code>/etc/m*</code></td>
+                        <td>A csillag (<code>*</code>) az úgynevezett <i>wildcard</i> (joker karakter). A jelentése: "minden fájl az /etc mappában, aminek a neve 'm' betűvel kezdődik, és utána bármi következik".</td>
+                    </tr>
+                    <tr>
+                        <td><code>Tűzoltól/</code></td>
+                        <td>A célmappa, ahová a fájlok bekerülnek.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div id="chmod" class="module-card">
-            <h2 class="module-title">🔹 5. Modul: Fájljogosultságok (chown / chmod)</h2>
+            <h2 class="module-title">🔹 6. Modul: Fájljogosultságok (chown / chmod)</h2>
             
             <div class="terminal-block">sudo chown  feigela:vizsgazo /home/feigela/Foci
 sudo chmod 770 /home/feigela/Foci</div>
-
-            <ul>
-                <li><b><code>chown [tulajdonos]:[csoport]</code></b>: Tulajdonjogok átadása.</li>
-                <li><b><code>chmod 770</code></b>: Tulajdonos: 7 (rwx), Csoport: 7 (rwx), Mindenki más: 0 (---).</li>
-            </ul>
         </div>
 
         <div id="mkfs" class="module-card">
-            <h2 class="module-title">🔹 6. Modul: Fájlrendszer Formázása (mkfs)</h2>
-            <p>Amikor a szerverhez új merevlemezt vagy partíciót adunk (pl. <code>/dev/sdb1</code>), azt formázni kell, mielőtt adatokat tárolhatnánk rajta. A leggyakoribb és legstabilabb Linux fájlrendszer az <b>ext4</b>.</p>
+            <h2 class="module-title">🔹 7. Modul: Fájlrendszer Formázása (mkfs)</h2>
             
             <div class="terminal-block">sudo mkfs -t ext4 /dev/sdb1
 sudo mkfs -t ext4 /dev/sdb2</div>
-
-            <table class="explanation-table">
-                <thead>
-                    <tr>
-                        <th>Parancselem / Flag</th>
-                        <th>Magyarázat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>mkfs</code></td>
-                        <td><b>Make FileSystem.</b> Ez a parancs hozza létre az üres fájlrendszert az adott blokkeszközön.</td>
-                    </tr>
-                    <tr>
-                        <td><code>-t ext4</code></td>
-                        <td><b>Type.</b> Meghatározza a fájlrendszer típusát. Ha a vizsgán megnyomod a dupla Tab gombot a <code>-t</code> után, a Linux listázza a támogatott típusokat (pl. <i>ext2, ext3, ext4, minix</i>).</td>
-                    </tr>
-                    <tr>
-                        <td><code>/dev/sdb1</code></td>
-                        <td>A célpartíció fizikai elérési útja. Az <b>sd</b> jelenti a lemezt (SCSI/SATA drive), a <b>b</b> jelenti a második fizikai lemezt, az <b>1</b> pedig a lemez első partícióját.</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
-        <div id="usermod" class="module-card">
-            <h2 class="module-title">🔹 7. Modul: Felhasználók és Csoportok Kezelése (usermod)</h2>
-            <p>Egy rendszerüzemeltetőnek tudnia kell a felhasználókat különböző jogosultsági csoportokba (pl. <i>Osztály</i>) besorolni. Erre a <code>usermod</code> parancsot használjuk.</p>
+        <div id="pipe" class="module-card">
+            <h2 class="module-title">🔹 8. Modul: Szövegkeresés és Csővezeték (Pipe)</h2>
+            <p><b>Feladat:</b> Írjon egy olyan parancsot, amely az <code>/etc/services</code> fájlból csak azoknak a soroknak a számát jeleníti meg, ahol szerepel a „zebra” szó! Használjon csővezetéket (pipe)!</p>
             
-            <div class="terminal-block">sudo usermod -a -G Osztály feigela
-groups
-groups feigela</div>
+            <div class="terminal-block">grep "zebra" /etc/services | wc -l</div>
+
+            <h3>Hogyan működik a csővezeték?</h3>
+            <p>A csővezeték (a <b><code>|</code></b> karakter, magyar billentyűzeten <code>AltGr + W</code>) a Linux egyik legfontosabb eszköze. Arra szolgál, hogy a vonal bal oldalán lévő parancs <i>eredményét</i> (kimenetét) bedobja a vonal jobb oldalán lévő parancs <i>bemeneteként</i>.</p>
 
             <table class="explanation-table">
                 <thead>
                     <tr>
-                        <th>Parancselem / Flag</th>
-                        <th>Magyarázat</th>
+                        <th>Parancsrészlet</th>
+                        <th>Mit csinál?</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>usermod</code></td>
-                        <td><b>User Modify.</b> Egy meglévő felhasználói fiók tulajdonságainak (pl. csoporttagság, jelszó, lejárat) módosítására szolgál.</td>
+                        <td><code>grep "zebra" /etc/services</code></td>
+                        <td>A <b>grep</b> (Global Regular Expression Print) végignézi a fájlt, és a képernyőre csak azokat a teljes sorokat listázná ki, amikben megtalálható a "zebra" szó.</td>
                     </tr>
                     <tr>
-                        <td><code>-a</code></td>
-                        <td><b>Append (Hozzáadás).</b> KRITIKUS kapcsoló! Csak a <code>-G</code> kapcsolóval együtt használható. Azt jelzi, hogy a felhasználót <i>hozzáadjuk</i> az új csoporthoz, anélkül, hogy a régi csoportjaiból törölnénk.</td>
+                        <td><code>|</code> (Pipe)</td>
+                        <td>Ahelyett, hogy kiírná a monitorra a talált sorokat, "becsövezi" őket a következő parancsnak.</td>
                     </tr>
                     <tr>
-                        <td><code>-G Osztály</code></td>
-                        <td><b>Groups.</b> A másodlagos csoport neve (ide kerül be a felhasználó).</td>
-                    </tr>
-                    <tr>
-                        <td><code>groups [felhasználó]</code></td>
-                        <td>Kiírja a képernyőre, hogy az adott felhasználó (pl. <i>feigela</i>) mely csoportoknak a tagja. Ha nem adsz meg nevet, a saját fiókod csoportjait listázza.</td>
+                        <td><code>wc -l</code></td>
+                        <td>A <b>wc</b> (Word Count) alapesetben szavakat, betűket és sorokat számol. Az <b>-l</b> (lines) kapcsolóval megmondjuk neki, hogy csak azt számolja meg, hány sor érkezett a csővezetékből.</td>
                     </tr>
                 </tbody>
             </table>
-            
-            <div class="warning-box">
-                <h4>⚠️ Vizsgacsapda:</h4>
-                <p>Ha a <code>usermod</code> parancsnál elfelejted az <b>-a</b> (append) kapcsolót, és csak a <code>-G</code>-t használod, a rendszer <b>törli</b> a felhasználót az összes eddigi csoportjából, és csak abba az egybe teszi be, amit most megadtál! Ezzel a vizsgán véletlenül kizárhatod a felhasználót a fontos helyekről (pl. a sudo csoportból).</p>
+
+            <div class="tip-box">
+                <h4>💡 Alternatív megoldás (szintén tökéletes a vizsgára):</h4>
+                <p>Ha szereted balról jobbra logikusan felépíteni a parancsot ("Olvasd el a fájlt -> Keresd a zebrát -> Számold meg"), akkor a <code>cat</code> paranccsal is indíthatsz:</p>
+                <code>cat /etc/services | grep "zebra" | wc -l</code>
+                sudo apt update
+
+<code>sudo apt install docker.io
+
+--- sudo systemctl start docker ---
+--- sudo systemctl enable docker ---
+
+sudo docker run -d --name Probaszerver -p 80:80 httpd
+
+--- sudo docker ps ---
+
+sudo docker exec -it Probaszerver /bin/sh
+
+cd /usr/local/apache2/htdocs
+
+echo "Próba" > index.html
+
+exit </code>
             </div>
         </div>
 

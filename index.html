@@ -256,8 +256,8 @@ sudo systemctl restart apache2</div>
             
             <div class="terminal-block">mysql -u root -p</div>
 
-            <div class="terminal-block sql-block">CREATE USER 'vizsgazo'@'localhost' IDENTIFIED BY 'Abcd1234';
-GRANT ALL PRIVILEGES ON . TO 'vizsgazo'@'localhost' WITH GRANT OPTION;
+            <div class="terminal-block sql-block">CREATE USER 'vizsgazo'@'%' IDENTIFIED BY 'Abcd1234';
+GRANT ALL PRIVILEGES ON *.* TO 'vizsgazo'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;</div>
 

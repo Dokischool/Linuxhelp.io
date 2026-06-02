@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szakmai Vizsga Felkészítő | Rendszerüzemeltető Technikus</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-warning: #f43f5e;
+            --terminal-bg: #020617;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 2px solid #334155;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--accent-blue);
+            font-size: 2.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid #334155;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--accent-blue);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        .module-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-title {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            margin-top: 0;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .terminal-block {
+            background-color: var(--terminal-bg);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #f8fafc;
+            overflow-x: auto;
+            margin: 20px 0;
+            position: relative;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .terminal-block::before {
+            content: "Terminal / Bash";
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .sql-block {
+            border-left-color: var(--accent-green);
+        }
+        .sql-block::before {
+            content: "MySQL / MariaDB Shell";
+        }
+
+        .explanation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        .explanation-table th, .explanation-table td {
+            border: 1px solid #334155;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .explanation-table th {
+            background-color: #1e293b;
+            color: var(--accent-blue);
+        }
+
+        .explanation-table tr:nth-child(even) {
+            background-color: #1a2436;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-cmd { background-color: #38bdf820; color: var(--accent-blue); }
+        .badge-flag { background-color: #4ade8020; color: var(--accent-green); }
+
+        .tip-box {
+            background-color: #04785720;
+            border: 1px solid #059669;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .tip-box h4 {
+            margin: 0 0 8px 0;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box {
+            background-color: #d9770620;
+            border: 1px solid #d97706;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box h4 {
+            margin: 0 0 8px 0;
+            color: #fbbf24;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            border-top: 1px solid #334155;
+            margin-top: 50px;
+        }
+
+        code {
+            background-color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #f43f5e;
+        }
+        
+        h3 {
+            color: #e2e8f0;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🖥️ Informatikai Rendszerüzemeltető Technikus</h1>
+        <p>Gyakorlati Vizsgafelkészítő és Szintaktikai Útmutató (Debian/Ubuntu Linux)</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="nav-buttons">
+            <a href="#lamp" class="nav-btn">1. LAMP Telepítés</a>
+            <a href="#mysql" class="nav-btn">2. MySQL Jogosultságok</a>
+            <a href="#mkdir" class="nav-btn">3. Mappastruktúrák</a>
+            <a href="#tar" class="nav-btn">4. Archiválás & Tömörítés</a>
+            <a href="#cp" class="nav-btn">5. Fájlok másolása</a>
+            <a href="#chmod" class="nav-btn">6. Jogosultságkezelés</a>
+            <a href="#mkfs" class="nav-btn">7. Fájlrendszer (mkfs)</a>
+            <a href="#pipe" class="nav-btn">8. Csővezeték (Pipe) & Grep</a>
+        </div>
+
+        <div id="lamp" class="module-card">
+            <h2 class="module-title">🔹 1. Modul: LAMP Szerverkörnyezet Kiépítése</h2>
+            
+            <div class="terminal-block">sudo apt install mariadb-server apache2 -y</div>
+            
+            <h3>Szolgáltatások státuszának verifikálása</h3>
+            <div class="terminal-block">sudo systemctl status mariadb
+sudo systemctl status apache2</div>
+
+            <h3>PHP és phpMyAdmin integráció</h3>
+            <div class="terminal-block">sudo apt install php libapache2-mod-php php-mysql phpmyadmin -y
+sudo phpenmod mbstring
+sudo systemctl restart apache2</div>
+            
+            <div class="tip-box">
+                <h4>💡 Vizsga Tipp a phpMyAdminhoz:</h4>
+                <p>A telepítés közben a rendszer megkérdezi, hogy melyik webszerverhez konfigurálja magát automatikusan. A Space billentyűvel rakj csillagot (<b>[*]</b>) az <b>apache2</b> elé, majd a Tab gombbal menj az [OK]-ra!</p>
+            </div>
+        </div>
+
+        <div id="mysql" class="module-card">
+            <h2 class="module-title">🔹 2. Modul: MySQL Adminisztráció</h2>
+            
+            <div class="terminal-block">mysql -u root -p</div>
+
+            <div class="terminal-block sql-block">CREATE USER 'vizsgazo'@'localhost' IDENTIFIED BY 'Abcd1234';
+GRANT ALL PRIVILEGES ON . TO 'vizsgazo'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;</div>
+
+            <h3>Szolgáltatás újraindítása és IP Cím Lekérdezése</h3>
+            <div class="terminal-block">sudo systemctl restart mariadb
+ip a</div>
+        </div>
+
+        <div id="mkdir" class="module-card">
+            <h2 class="module-title">🔹 3. Modul: Könyvtárszerkezet Generálás</h2>
+            
+            <h3>A) Gyorsított módszer (Kapcsos zárójelekkel)</h3>
+            <div class="terminal-block">sudo mkdir -p Mentök/{Lègi,Vizi} Tüzoltòl/Zàhony/{Kobra365,Vizisiklò824}
+tree</div>
+
+            <h3>B) Lépésenkénti, biztonságos módszer</h3>
+            <div class="terminal-block">mkdir -p Mentők/Légi
+mkdir -p Mentők/Vizi
+mkdir -p Tűzoltók/Záhony/Kobra356
+mkdir -p Tűzoltók/Záhony/Vizisikló824
+tree</div>
+        </div>
+
+        <div id="tar" class="module-card">
+            <h2 class="module-title">🔹 4. Modul: Archívumok Készítése és Tömörítése</h2>
+            <p>Első lépésként létrehozunk egy sima <code>.tar</code> archívumot, majd a vizsgafeladat szerint ezt be kell tömörítenünk egy <code>bzip2</code> eljárással, hogy helyet spóroljunk.</p>
+            
+            <h3>1. Archívum létrehozása (Becsomagolás)</h3>
+            <div class="terminal-block">sudo tar -cvf /home/vizsgazo/fire.tar Tüzoltòl/</div>
+            <p>A <code>-cvf</code> kapcsolókkal (Create, Verbose, File) létrehozunk egy tömörítetlen archívumot.</p>
+
+            <h3>2. Archívum tömörítése (bzip2)</h3>
+            <div class="terminal-block">sudo bzip2 /home/vizsgazo/fire.tar
+ls</div>
+            
+            <table class="explanation-table">
+                <thead>
+                    <tr>
+                        <th>Parancs / Eredmény</th>
+                        <th>Magyarázat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>bzip2 [fájl]</code></td>
+                        <td>A parancs bemenetként kapja a `.tar` fájlt, és egy nagyon erős tömörítési algoritmussal összezsugorítja azt.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ls</code> kimenete: <br><span style="color: #f43f5e">fire.tar.bz2</span></td>
+                        <td>Az eredeti `fire.tar` fájl megszűnik létezni, helyette a rendszer létrehozza a `fire.tar.bz2` nevű, már tömörített állományt.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cp" class="module-card">
+            <h2 class="module-title">🔹 5. Modul: Fájlok másolása helyettesítő karakterekkel (Wildcards)</h2>
+            <p>Gyakori vizsgafeladat, hogy egy adott mappából csak a bizonyos betűvel kezdődő fájlokat kell átmásolni egy új helyre.</p>
+
+            <div class="terminal-block">sudo cp /etc/m* Tűzoltól/</div>
+
+            <table class="explanation-table">
+                <thead>
+                    <tr>
+                        <th>Kifejezés</th>
+                        <th>Jelentés</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>cp</code></td>
+                        <td><b>Copy.</b> A másolás parancsa.</td>
+                    </tr>
+                    <tr>
+                        <td><code>/etc/m*</code></td>
+                        <td>A csillag (<code>*</code>) az úgynevezett <i>wildcard</i> (joker karakter). A jelentése: "minden fájl az /etc mappában, aminek a neve 'm' betűvel kezdődik, és utána bármi következik".</td>
+                    </tr>
+                    <tr>
+                        <td><code>Tűzoltól/</code></td>
+                        <td>A célmappa, ahová a fájlok bekerülnek.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chmod" class="module-card">
+            <h2 class="module-title">🔹 6. Modul: Fájljogosultságok (chown / chmod)</h2>
+            
+            <div class="terminal-block">sudo chown  feigela:vizsgazo /home/feigela/Foci
+sudo chmod 770 /home/feigela/Foci</div>
+        </div>
+
+        <div id="mkfs" class="module-card">
+            <h2 class="module-title">🔹 7. Modul: Fájlrendszer Formázása (mkfs)</h2>
+            
+            <div class="terminal-block">sudo mkfs -t ext4 /dev/sdb1
+sudo mkfs -t ext4 /dev/sdb2</div>
+        </div>
+
+        <div id="pipe" class="module-card">
+            <h2 class="module-title">🔹 8. Modul: Szövegkeresés és Csővezeték (Pipe)</h2>
+            <p><b>Feladat:</b> Írjon egy olyan parancsot, amely az <code>/etc/services</code> fájlból csak azoknak a soroknak a számát jeleníti meg, ahol szerepel a „zebra” szó! Használjon csővezetéket (pipe)!</p>
+            
+            <div class="terminal-block">grep "zebra" /etc/services | wc -l</div>
+
+            <h3>Hogyan működik a csővezeték?</h3>
+            <p>A csővezeték (a <b><code>|</code></b> karakter, magyar billentyűzeten <code>AltGr + W</code>) a Linux egyik legfontosabb eszköze. Arra szolgál, hogy a vonal bal oldalán lévő parancs <i>eredményét</i> (kimenetét) bedobja a vonal jobb oldalán lévő parancs <i>bemeneteként</i>.</p>
+
+            <table class="explanation-table">
+                <thead>
+                    <tr>
+                        <th>Parancsrészlet</th>
+                        <th>Mit csinál?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>grep "zebra" /etc/services</code></td>
+                        <td>A <b>grep</b> (Global Regular Expression Print) végignézi a fájlt, és a képernyőre csak azokat a teljes sorokat listázná ki, amikben megtalálható a "zebra" szó.</td>
+                    </tr>
+                    <tr>
+                        <td><code>|</code> (Pipe)</td>
+                        <td>Ahelyett, hogy kiírná a monitorra a talált sorokat, "becsövezi" őket a következő parancsnak.</td>
+                    </tr>
+                    <tr>
+                        <td><code>wc -l</code></td>
+                        <td>A <b>wc</b> (Word Count) alapesetben szavakat, betűket és sorokat számol. Az <b>-l</b> (lines) kapcsolóval megmondjuk neki, hogy csak azt számolja meg, hány sor érkezett a csővezetékből.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <h4>💡 Alternatív megoldás (szintén tökéletes a vizsgára):</h4>
+                <p>Ha szereted balról jobbra logikusan felépíteni a parancsot ("Olvasd el a fájlt -> Keresd a zebrát -> Számold meg"), akkor a <code>cat</code> paranccsal is indíthatsz:</p>
+                <code>cat /etc/services | grep "zebra" | wc -l</code>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 - Rendszerüzemeltető Technikus Vizsgafelkészítő Tudásbázis</p>
+    </footer>
+
+</body>
+</html>
